@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -6,20 +6,21 @@ from CSVDataLoader import CSVDataLoader
 from KNNClassfier import KNNClassifier
 from KMean import KMean
 
+PROJECT_DIR = Path(__file__).resolve().parent
+DATA_DIR = PROJECT_DIR / "Data"
+
 class Main:
     def main(self):
         answer1 = input("Are you testing KNN or K-Mean?")
         loader = CSVDataLoader()
         if answer1 == "KNN":
             k = int(input("What is your chosen K value?"))
-            X, y = loader.load(
-                '/Users/boranpang/Desktop/prep/Practices/machine_learning_practices/KNN_&_KNN-Mean/Data/knn.csv')
+            X, y = loader.load(DATA_DIR / "knn.csv")
             p1 = float(input("What is your chosen testing value p1?"))
             p2 = float(input("What is your chosen testing value p2?"))
             self.KNN(p1,p2,k,X,y)
         elif answer1 == "K-Mean":
-            X = loader.loadk(
-                '/Users/boranpang/Desktop/prep/Practices/machine_learning_practices/KNN_&_KNN-Mean/Data/kmean.csv')
+            X = loader.loadk(DATA_DIR / "kmean.csv")
             p3 = int(input("What is your chosen number of clusters?"))
             Kk = KMean()
             ancors = Kk.recursion(X, p3)
@@ -41,7 +42,7 @@ class Main:
             else:
                 ax.axis("off")
         fig.tight_layout()
-        fig.savefig(os.path.expanduser("~/Desktop/kmean_steps.png"), dpi=150)
+        fig.savefig(PROJECT_DIR / "kmean_steps.png", dpi=150)
         plt.close(fig)
 
     def KNN(self, p1, p2, k, X, y):
